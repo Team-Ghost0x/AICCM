@@ -130,6 +130,23 @@ AICCM/
 
 ---
 
+## 🏆 Hackathon Deliverables & Evaluation Mapping
+
+This project addresses **Challenge 2: Kampus.VC — AI Content Creator Marketplace** for HacXLerate 2026.
+
+| Deliverable / Rubric Criterion | Implementation & Documentation |
+| :--- | :--- |
+| **1. Creator Profiles & AI Portfolios (30%)** | Rich creator dossiers with multi-take scrubber, prompt evolution, tools, and LoRA checkpoints. Visit `/creators/mira-okonkwo` or `/creators/arjun-patel`. |
+| **2. Brief Definition & Scoping (20%)** | Multi-aspect-ratio scoping (`9:16`, `16:9`, `1:1`), commercial usage licensing matrix, and escrow milestones. Visit `/briefs/new`. |
+| **3. Discovery & Filtering (25%)** | 9+ faceted filters (specializations, AI tools, content types, turnaround, budget) with intelligent empty-state relaxation suggestions. Visit `/discover`. |
+| **4. User Experience & Aesthetics (15%)** | Dual-sided brand/creator workflow, native range sliders, dark/light theme, and contextual audio feedback. Visit `/dashboard`. |
+| **5. Presentation & Demo (10%)** | 16:9 widescreen presentation deck: [`docs/AI-Content-Creator-Marketplace-Demo.pptx`](file:///home/ghost/aiccm/docs/AI-Content-Creator-Marketplace-Demo.pptx) and script in [`docs/demo-slides.md`](file:///home/ghost/aiccm/docs/demo-slides.md). |
+| **Bonus 1: Creator Verification Signals** | 4-tier verification (`unverified`, `self_declared`, `evidence_attached`, `reviewed`) with tool verification badges and audit history. |
+| **Bonus 2: AI-Assisted Brief Builder** | Natural language prompt parser converting rough ideas into structured parameters with auto-filled budgets, ratios, and tools. |
+| **Data Model Note** | Full architectural data model specification documented in [`docs/DATA_MODEL.md`](file:///home/ghost/aiccm/docs/DATA_MODEL.md). |
+
+---
+
 ## 📄 License
 
 This project is licensed under the MIT License.
