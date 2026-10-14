@@ -10,7 +10,7 @@ import { requireAuth, requireRole } from "../auth.js";
 
 export const router = Router();
 
-// ── 8.1 GET /api/admin/metrics ────────────────────────────────────────────────
+// Telemetry & platform metrics
 router.get("/metrics", requireAuth, requireRole("admin"), (req, res) => {
   // Total creators
   const totalCreators = db.creators.length;
@@ -72,7 +72,7 @@ router.get("/metrics", requireAuth, requireRole("admin"), (req, res) => {
   });
 });
 
-// ── 8.2 GET /api/admin/audit-logs ────────────────────────────────────────────
+// Security audit trail logs
 router.get("/audit-logs", requireAuth, requireRole("admin"), (req, res) => {
   const { limit = 50, offset = 0, tag } = req.query;
 
@@ -98,7 +98,7 @@ router.get("/audit-logs", requireAuth, requireRole("admin"), (req, res) => {
   return res.status(200).json({ logs: paginated, total });
 });
 
-// ── 8.3 POST /api/admin/data/reset ───────────────────────────────────────────
+// Reset database to seed state
 router.post("/data/reset", requireAuth, requireRole("admin"), (req, res) => {
   // Revoke all current tokens by clearing the revoked set and resetting db
   db.revokedTokens.clear();
@@ -113,7 +113,7 @@ router.post("/data/reset", requireAuth, requireRole("admin"), (req, res) => {
   });
 });
 
-// ── 8.4 GET /api/admin/users ──────────────────────────────────────────────────
+// Manage platform users
 router.get("/users", requireAuth, requireRole("admin"), (req, res) => {
   const { q, role, status } = req.query;
   let users = [...db.users];
@@ -144,7 +144,7 @@ router.get("/users", requireAuth, requireRole("admin"), (req, res) => {
   return res.status(200).json({ users: safeUsers, total: safeUsers.length });
 });
 
-// ── 8.5 PATCH /api/admin/users/:id ────────────────────────────────────────────
+// Update user account status
 router.patch("/users/:id", requireAuth, requireRole("admin"), (req, res) => {
   const user = db.findUserById(req.params.id);
   if (!user) {
@@ -162,7 +162,7 @@ router.patch("/users/:id", requireAuth, requireRole("admin"), (req, res) => {
   return res.status(200).json({ success: true, user: { id: user.id, name: user.name, email: user.email, role: user.role, status: user.status } });
 });
 
-// ── 8.6 GET /api/admin/verifications ──────────────────────────────────────────
+// Pending verification requests
 router.get("/verifications", requireAuth, requireRole("admin"), (req, res) => {
   const { status } = req.query;
   let list = db.verifications || [];
@@ -172,7 +172,7 @@ router.get("/verifications", requireAuth, requireRole("admin"), (req, res) => {
   return res.status(200).json({ verifications: list, total: list.length });
 });
 
-// ── 8.7 PATCH /api/admin/verifications/:id ────────────────────────────────────
+// Review creator verification submission
 router.patch("/verifications/:id", requireAuth, requireRole("admin"), (req, res) => {
   const ver = (db.verifications || []).find((v) => v.id === req.params.id);
   if (!ver) {
@@ -209,13 +209,13 @@ router.patch("/verifications/:id", requireAuth, requireRole("admin"), (req, res)
   return res.status(200).json(ver);
 });
 
-// ── 8.8 GET /api/admin/reports ────────────────────────────────────────────────
+// Moderation reports
 router.get("/reports", requireAuth, requireRole("admin"), (req, res) => {
   const reports = db.reports || [];
   return res.status(200).json({ reports, total: reports.length });
 });
 
-// ── 8.9 PATCH /api/admin/reports/:id ──────────────────────────────────────────
+// Resolve moderation report
 router.patch("/reports/:id", requireAuth, requireRole("admin"), (req, res) => {
   const rep = (db.reports || []).find((r) => r.id === req.params.id);
   if (!rep) {
@@ -231,12 +231,12 @@ router.patch("/reports/:id", requireAuth, requireRole("admin"), (req, res) => {
   return res.status(200).json(rep);
 });
 
-// ── 8.10 GET /api/admin/categories ────────────────────────────────────────────
+// Category list
 router.get("/categories", (_req, res) => {
   return res.status(200).json(db.categories || {});
 });
 
-// ── 8.11 POST /api/admin/categories ───────────────────────────────────────────
+// Create category
 router.post("/categories", requireAuth, requireRole("admin"), (req, res) => {
   const { type, item } = req.body;
   if (!type || !item || !item.id || !item.label) {

@@ -67,6 +67,28 @@
       "createdAt": "2026-08-01T10:00:00Z"
     },
     {
+      "id": "usr_2748455f",
+      "email": "demo@ayushsrivastav.in",
+      "passwordHash": "$2a$10$RIJKSG39uTGF22Iu/aFYdOoEnYZ4iOjMGLikQ56xl849toacPE96y",
+      "name": "Demo-Brand",
+      "company": "Demo-Brand",
+      "role": "brand",
+      "balanceInr": 250000,
+      "credits": 250,
+      "createdAt": "2026-10-14T05:06:10.281Z"
+    },
+    {
+      "id": "usr_55d11693",
+      "email": "demo-creator@ayushsrivastav.in",
+      "passwordHash": "$2a$10$XnZnBpCz028fK3cy0sQch.o6skLGCgKrqED71/hSJhPv9cc4R0H6q",
+      "name": "Demo Artist",
+      "company": "Demologist",
+      "role": "creator",
+      "balanceInr": 50000,
+      "credits": 250,
+      "createdAt": "2026-10-14T05:07:52.491Z"
+    },
+    {
       "id": "usr_9921",
       "email": "director@hyperreal.studio",
       "passwordHash": "$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi",
@@ -89,6 +111,17 @@
       "createdAt": "2026-10-13T22:29:57.390Z"
     },
     {
+      "id": "usr_c7565ff1",
+      "email": "test@test.com",
+      "passwordHash": "$2a$10$qVp4GBhPblTBkwIhrujtxO/GhAa8vTYpTma5WywP4sIpKJ8NHBF5.",
+      "name": "test",
+      "company": "test",
+      "role": "creator",
+      "balanceInr": 50000,
+      "credits": 250,
+      "createdAt": "2026-10-14T05:06:38.395Z"
+    },
+    {
       "id": "usr_defc5438",
       "email": "srivastavaayush261206@gmail.com",
       "passwordHash": "$2a$10$AFfgzHT.KwybeQ3s1s8XZOYWr24B5KWSIRI39ts8mS.6QlEhpGuuS",
@@ -105,7 +138,7 @@
       "passwordHash": "$2a$10$4x7Ot/IPF50PbeDLgzn0GuSuFzHWPdj/kMDlUk3yoMcSX5XZfHqky",
       "name": "ADITYA",
       "company": "AG",
-      "role": "brand",
+      "role": "creator",
       "balanceInr": 50000,
       "credits": 250,
       "createdAt": "2026-10-14T03:37:21.462Z"
@@ -324,6 +357,128 @@
       "isSample": true
     },
     {
+      "id": "cr_2d21ebda",
+      "handle": "ag",
+      "displayName": "ADITYA",
+      "headline": "AG · AI Generative Director",
+      "bio": "Specialized in cinematic camera control, consistent identity synthesis, and cutting-edge diffusion pipelines.",
+      "location": "India",
+      "avatarUrl": null,
+      "specializations": [
+        "ai_film",
+        "product_ads"
+      ],
+      "skills": [
+        "Prompt design",
+        "LoRA training",
+        "ComfyUI VFX",
+        "Camera control"
+      ],
+      "tools": [
+        {
+          "toolId": "comfyui",
+          "name": "ComfyUI",
+          "kind": "video",
+          "usedFor": "Custom LoRA motion chaining",
+          "verify": "reviewed"
+        },
+        {
+          "toolId": "runway-gen3",
+          "name": "Runway Gen-3",
+          "kind": "video",
+          "usedFor": "Cinematic motion generation",
+          "verify": "reviewed"
+        },
+        {
+          "toolId": "midjourney",
+          "name": "Midjourney v6",
+          "kind": "image",
+          "usedFor": "Concept art and storyboarding",
+          "verify": "evidence_attached"
+        }
+      ],
+      "contentTypes": [
+        "video",
+        "still"
+      ],
+      "formats": [
+        "9:16",
+        "16:9"
+      ],
+      "turnaroundDays": 4,
+      "priceFromInr": 25000,
+      "availability": "open",
+      "verification": {
+        "tools": "reviewed",
+        "workflow": "evidence_attached",
+        "pastWork": "reviewed"
+      },
+      "portfolio": [],
+      "isSample": false,
+      "createdAt": "2026-10-14T03:37:21.467Z"
+    },
+    {
+      "id": "cr_8d0d402e",
+      "handle": "test",
+      "displayName": "test",
+      "headline": "test · AI Generative Director",
+      "bio": "Specialized in cinematic camera control, consistent identity synthesis, and cutting-edge diffusion pipelines.",
+      "location": "India",
+      "avatarUrl": null,
+      "specializations": [
+        "ai_film",
+        "product_ads"
+      ],
+      "skills": [
+        "Prompt design",
+        "LoRA training",
+        "ComfyUI VFX",
+        "Camera control"
+      ],
+      "tools": [
+        {
+          "toolId": "comfyui",
+          "name": "ComfyUI",
+          "kind": "video",
+          "usedFor": "Custom LoRA motion chaining",
+          "verify": "reviewed"
+        },
+        {
+          "toolId": "runway-gen3",
+          "name": "Runway Gen-3",
+          "kind": "video",
+          "usedFor": "Cinematic motion generation",
+          "verify": "reviewed"
+        },
+        {
+          "toolId": "midjourney",
+          "name": "Midjourney v6",
+          "kind": "image",
+          "usedFor": "Concept art and storyboarding",
+          "verify": "evidence_attached"
+        }
+      ],
+      "contentTypes": [
+        "video",
+        "still"
+      ],
+      "formats": [
+        "9:16",
+        "16:9"
+      ],
+      "turnaroundDays": 4,
+      "priceFromInr": 25000,
+      "availability": "open",
+      "verification": {
+        "tools": "reviewed",
+        "workflow": "evidence_attached",
+        "pastWork": "reviewed"
+      },
+      "portfolio": [],
+      "isSample": false,
+      "createdAt": "2026-10-14T05:06:38.398Z"
+    },
+    {
       "id": "cr_cd57181a",
       "handle": "netigoo",
       "displayName": "Ayush Srivastava",
@@ -383,6 +538,67 @@
       "portfolio": [],
       "isSample": false,
       "createdAt": "2026-10-13T22:31:54.979Z"
+    },
+    {
+      "id": "cr_ee39b8cb",
+      "handle": "demologist",
+      "displayName": "Demo Artist",
+      "headline": "Demologist · AI Generative Director",
+      "bio": "Specialized in cinematic camera control, consistent identity synthesis, and cutting-edge diffusion pipelines.",
+      "location": "India",
+      "avatarUrl": null,
+      "specializations": [
+        "ai_film",
+        "product_ads"
+      ],
+      "skills": [
+        "Prompt design",
+        "LoRA training",
+        "ComfyUI VFX",
+        "Camera control"
+      ],
+      "tools": [
+        {
+          "toolId": "comfyui",
+          "name": "ComfyUI",
+          "kind": "video",
+          "usedFor": "Custom LoRA motion chaining",
+          "verify": "reviewed"
+        },
+        {
+          "toolId": "runway-gen3",
+          "name": "Runway Gen-3",
+          "kind": "video",
+          "usedFor": "Cinematic motion generation",
+          "verify": "reviewed"
+        },
+        {
+          "toolId": "midjourney",
+          "name": "Midjourney v6",
+          "kind": "image",
+          "usedFor": "Concept art and storyboarding",
+          "verify": "evidence_attached"
+        }
+      ],
+      "contentTypes": [
+        "video",
+        "still"
+      ],
+      "formats": [
+        "9:16",
+        "16:9"
+      ],
+      "turnaroundDays": 4,
+      "priceFromInr": 25000,
+      "availability": "open",
+      "verification": {
+        "tools": "reviewed",
+        "workflow": "evidence_attached",
+        "pastWork": "reviewed"
+      },
+      "portfolio": [],
+      "isSample": false,
+      "createdAt": "2026-10-14T05:07:52.495Z"
     },
     {
       "id": "creator-arjun",
@@ -937,70 +1153,55 @@
           ]
         }
       ]
-    },
-    {
-      "id": "cr_2d21ebda",
-      "handle": "ag",
-      "displayName": "ADITYA",
-      "headline": "AG · AI Generative Director",
-      "bio": "Specialized in cinematic camera control, consistent identity synthesis, and cutting-edge diffusion pipelines.",
-      "location": "India",
-      "avatarUrl": null,
-      "specializations": [
-        "ai_film",
-        "product_ads"
-      ],
-      "skills": [
-        "Prompt design",
-        "LoRA training",
-        "ComfyUI VFX",
-        "Camera control"
-      ],
-      "tools": [
-        {
-          "toolId": "comfyui",
-          "name": "ComfyUI",
-          "kind": "video",
-          "usedFor": "Custom LoRA motion chaining",
-          "verify": "reviewed"
-        },
-        {
-          "toolId": "runway-gen3",
-          "name": "Runway Gen-3",
-          "kind": "video",
-          "usedFor": "Cinematic motion generation",
-          "verify": "reviewed"
-        },
-        {
-          "toolId": "midjourney",
-          "name": "Midjourney v6",
-          "kind": "image",
-          "usedFor": "Concept art and storyboarding",
-          "verify": "evidence_attached"
-        }
-      ],
-      "contentTypes": [
-        "video",
-        "still"
-      ],
-      "formats": [
-        "9:16",
-        "16:9"
-      ],
-      "turnaroundDays": 4,
-      "priceFromInr": 25000,
-      "availability": "open",
-      "verification": {
-        "tools": "reviewed",
-        "workflow": "evidence_attached",
-        "pastWork": "reviewed"
-      },
-      "portfolio": [],
-      "isSample": false,
-      "createdAt": "2026-10-14T03:37:21.467Z"
     }
   ],
   "briefs": [
+    {
+      "id": "br_0b068d35",
+      "brandId": "usr_c7565ff1",
+      "brandName": "test",
+      "title": "test",
+      "objective": "ndsiguifg",
+      "requirements": "dfsjbfuhdsn",
+      "contentType": "video",
+      "styleTags": [
+        "premium"
+      ],
+      "referenceUrls": [],
+      "formats": [
+        {
+          "aspectRatio": "9:16",
+          "durationSec": 15
+        },
+        {
+          "aspectRatio": "1:1",
+          "durationSec": 15
+        }
+      ],
+      "deliverablesCount": 3,
+      "preferredTools": [
+        "runway"
+      ],
+      "budgetInr": {
+        "min": 20000,
+        "max": 40000
+      },
+      "deadline": "2026-10-21T05:09:10.170Z",
+      "commercialUse": {
+        "uses": [
+          "paid_social",
+          "organic_social"
+        ],
+        "territory": "india",
+        "termMonths": 12,
+        "exclusivity": "none",
+        "rightsTransfer": "license",
+        "aiDisclosure": "must_label",
+        "noModelTraining": true
+      },
+      "status": "open",
+      "createdAt": "2026-10-14T05:09:11.194Z"
+    },
     {
       "id": "br_36069111",
       "brandId": "usr_1024",
@@ -1520,6 +1721,166 @@
     }
   ],
   "auditLogs": [
+    {
+      "id": "log_1791954893980",
+      "timestamp": "2026-10-14T05:14:53.980Z",
+      "tag": "AUTH",
+      "severity": "info",
+      "actor": "usr_c7565ff1",
+      "message": "User test@test.com authenticated via email"
+    },
+    {
+      "id": "log_1791954878176",
+      "timestamp": "2026-10-14T05:14:38.176Z",
+      "tag": "AUTH",
+      "severity": "info",
+      "actor": "usr_c7565ff1",
+      "message": "User test@test.com logged out"
+    },
+    {
+      "id": "log_1791954848320",
+      "timestamp": "2026-10-14T05:14:08.320Z",
+      "tag": "AUTH",
+      "severity": "info",
+      "actor": "usr_e3cc77fd",
+      "message": "User 23rajaditya@gmail.com logged out"
+    },
+    {
+      "id": "log_1791954833586",
+      "timestamp": "2026-10-14T05:13:53.586Z",
+      "tag": "AUTH",
+      "severity": "info",
+      "actor": "usr_e3cc77fd",
+      "message": "User 23rajaditya@gmail.com authenticated via email"
+    },
+    {
+      "id": "log_1791954786356",
+      "timestamp": "2026-10-14T05:13:06.356Z",
+      "tag": "AUTH",
+      "severity": "info",
+      "actor": "usr_e3cc77fd",
+      "message": "User 23rajaditya@gmail.com logged out"
+    },
+    {
+      "id": "log_1791954698844",
+      "timestamp": "2026-10-14T05:11:38.844Z",
+      "tag": "AUTH",
+      "severity": "info",
+      "actor": "usr_c7565ff1",
+      "message": "User test@test.com authenticated via email"
+    },
+    {
+      "id": "log_1791954694944",
+      "timestamp": "2026-10-14T05:11:34.944Z",
+      "tag": "AUTH",
+      "severity": "info",
+      "actor": "usr_c7565ff1",
+      "message": "User test@test.com logged out"
+    },
+    {
+      "id": "log_1791954692386",
+      "timestamp": "2026-10-14T05:11:32.386Z",
+      "tag": "SYSTEM",
+      "severity": "info",
+      "actor": "usr_c7565ff1",
+      "message": "Proposal submitted for brief \"test\""
+    },
+    {
+      "id": "log_1791954670237",
+      "timestamp": "2026-10-14T05:11:10.237Z",
+      "tag": "AUTH",
+      "severity": "info",
+      "actor": "usr_c7565ff1",
+      "message": "User test@test.com authenticated via email"
+    },
+    {
+      "id": "log_1791954657995",
+      "timestamp": "2026-10-14T05:10:57.996Z",
+      "tag": "AUTH",
+      "severity": "info",
+      "actor": "usr_c7565ff1",
+      "message": "User test@test.com logged out"
+    },
+    {
+      "id": "log_1791954611505",
+      "timestamp": "2026-10-14T05:10:11.505Z",
+      "tag": "AUTH",
+      "severity": "info",
+      "actor": "usr_c7565ff1",
+      "message": "User test@test.com authenticated via email"
+    },
+    {
+      "id": "log_1791954551198",
+      "timestamp": "2026-10-14T05:09:11.198Z",
+      "tag": "SYSTEM",
+      "severity": "info",
+      "actor": "usr_c7565ff1",
+      "message": "Brief \"test\" published by test"
+    },
+    {
+      "id": "log_1791954516873",
+      "timestamp": "2026-10-14T05:08:36.873Z",
+      "tag": "AUTH",
+      "severity": "info",
+      "actor": "usr_c7565ff1",
+      "message": "User test@test.com authenticated via email"
+    },
+    {
+      "id": "log_1791954511340",
+      "timestamp": "2026-10-14T05:08:31.340Z",
+      "tag": "AUTH",
+      "severity": "info",
+      "actor": "usr_c7565ff1",
+      "message": "User test@test.com logged out"
+    },
+    {
+      "id": "log_1791954504492",
+      "timestamp": "2026-10-14T05:08:24.492Z",
+      "tag": "AUTH",
+      "severity": "info",
+      "actor": "usr_c7565ff1",
+      "message": "User test@test.com authenticated via email"
+    },
+    {
+      "id": "log_1791954476423",
+      "timestamp": "2026-10-14T05:07:56.423Z",
+      "tag": "AUTH",
+      "severity": "info",
+      "actor": "usr_c7565ff1",
+      "message": "User test@test.com logged out"
+    },
+    {
+      "id": "log_1791954472497",
+      "timestamp": "2026-10-14T05:07:52.497Z",
+      "tag": "AUTH",
+      "severity": "info",
+      "actor": "usr_55d11693",
+      "message": "New creator account registered: demo-creator@ayushsrivastav.in"
+    },
+    {
+      "id": "log_1791954400494",
+      "timestamp": "2026-10-14T05:06:40.494Z",
+      "tag": "AUTH",
+      "severity": "info",
+      "actor": "usr_2748455f",
+      "message": "User demo@ayushsrivastav.in logged out"
+    },
+    {
+      "id": "log_1791954398401",
+      "timestamp": "2026-10-14T05:06:38.401Z",
+      "tag": "AUTH",
+      "severity": "info",
+      "actor": "usr_c7565ff1",
+      "message": "New creator account registered: test@test.com"
+    },
+    {
+      "id": "log_1791954370284",
+      "timestamp": "2026-10-14T05:06:10.284Z",
+      "tag": "AUTH",
+      "severity": "info",
+      "actor": "usr_2748455f",
+      "message": "New brand account registered: demo@ayushsrivastav.in"
+    },
     {
       "id": "log_1791949156112",
       "timestamp": "2026-10-14T03:39:16.112Z",

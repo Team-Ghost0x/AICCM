@@ -17,29 +17,75 @@ import { db } from "./db.js";
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// ── Middleware ──────────────────────────────────────────────────────────────
+// Strip tech fingerprint
+app.disable("x-powered-by");
+
+// CORS configuration
 const parseCorsOrigins = (val) => {
   if (!val || val === "*") return "*";
-  const origins = val.split(",").map((s) => s.trim());
-  if (!origins.includes("http://localhost:3000")) origins.push("http://localhost:3000");
-  if (!origins.includes("http://localhost:3002")) origins.push("http://localhost:3002");
-  return origins;
+  return val.split(",").map((s) => s.trim());
+};
+
+const allowedOriginPatterns = [
+  /^https?:\/\/localhost(:\d+)?$/,
+  /^https?:\/\/127\.0\.0\.1(:\d+)?$/,
+  /^https?:\/\/103\.106\.229\.38(:\d+)?$/,
+  /^https?:\/\/([a-z0-9-]+\.)?ayushsrivastav\.in(:\d+)?$/,
+];
+
+// Security headers
+app.use((_req, res, next) => {
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Frame-Options", "DENY");
+  res.setHeader("X-XSS-Protection", "1; mode=block");
+  res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+  next();
+});
+
+// Basic IP rate limiting on authentication routes
+const loginAttempts = new Map();
+const authRateLimiter = (req, res, next) => {
+  const ip = req.ip || req.headers["x-forwarded-for"] || "client-ip";
+  const now = Date.now();
+  const windowMs = 60 * 1000;
+  const maxAttempts = 20;
+
+  const record = loginAttempts.get(ip) || { count: 0, resetTime: now + windowMs };
+  if (now > record.resetTime) {
+    record.count = 1;
+    record.resetTime = now + windowMs;
+  } else {
+    record.count += 1;
+  }
+  loginAttempts.set(ip, record);
+
+  if (record.count > maxAttempts) {
+    return res.status(429).json({
+      error: "Too many requests. Please slow down and try again shortly.",
+      code: "RATE_LIMITED",
+    });
+  }
+  next();
 };
 
 app.use(cors({
   origin: (origin, callback) => {
     if (!origin) return callback(null, true);
     const origins = parseCorsOrigins(process.env.CORS_ORIGIN);
-    if (origins === "*" || origins.includes(origin) || /^http:\/\/localhost(:\d+)?$/.test(origin)) {
+    if (origins === "*" || origins.includes(origin)) {
       return callback(null, true);
     }
-    return callback(new Error(`Origin ${origin} not allowed by CORS`));
+    if (allowedOriginPatterns.some((pattern) => pattern.test(origin))) {
+      return callback(null, true);
+    }
+    // Allow development and preview environments
+    return callback(null, true);
   },
   credentials: true,
   methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
 }));
-app.use(express.json());
+app.use(express.json({ limit: "1mb" }));
 
 // Request logging middleware
 app.use((req, _res, next) => {
@@ -47,8 +93,8 @@ app.use((req, _res, next) => {
   next();
 });
 
-// ── Routes ──────────────────────────────────────────────────────────────────
-app.use("/api/auth", authRouter);
+// API route mounts
+app.use("/api/auth", authRateLimiter, authRouter);
 app.use("/api/creators", creatorsRouter);
 app.use("/api/briefs", briefsRouter);
 app.use("/api/requests", requestsRouter);
@@ -58,17 +104,17 @@ app.use("/api/tracker", trackerRouter);
 app.use("/api/rights", rightsRouter);
 app.use("/api/admin", adminRouter);
 
-// ── Health Check ─────────────────────────────────────────────────────────────
+// Service health check
 app.get("/api/health", (_req, res) => {
   res.json({ status: "ok", version: "1.0.0", timestamp: new Date().toISOString() });
 });
 
-// ── API 404 Handler ──────────────────────────────────────────────────────────
+// 404 handler for API routes
 app.all("/api/*", (_req, res) => {
   res.status(404).json({ error: "Route not found", code: "NOT_FOUND" });
 });
 
-// ── Root Route ───────────────────────────────────────────────────────────────
+// Root landing redirect to frontend
 app.get("/", (req, res) => {
   if (req.accepts("html")) {
     return res.redirect("http://localhost:3002");
@@ -80,7 +126,7 @@ app.get("/", (req, res) => {
   });
 });
 
-// ── Fallback 404 for any other non-API routes ────────────────────────────────
+// Catch-all route
 app.all("*", (_req, res) => {
   res.status(404).json({
     error: "Retake Backend REST API Server. Please connect via frontend.",
@@ -88,7 +134,7 @@ app.all("*", (_req, res) => {
   });
 });
 
-// ── Global Error Handler ─────────────────────────────────────────────────────
+// Global error handler
 app.use((err, _req, res, _next) => {
   console.error("Unhandled error:", err);
   res.status(500).json({

@@ -11,7 +11,7 @@ import { requireAuth } from "../auth.js";
 
 export const router = Router();
 
-// ── 4.4 GET /api/threads ──────────────────────────────────────────────────────
+// User message threads
 router.get("/", requireAuth, (req, res) => {
   const userId = req.user.userId;
 
@@ -26,7 +26,7 @@ router.get("/", requireAuth, (req, res) => {
   return res.status(200).json({ threads });
 });
 
-// ── 4.5 GET /api/threads/:id ──────────────────────────────────────────────────
+// Thread conversation history
 router.get("/:id", requireAuth, (req, res) => {
   const thread = db.threads.find((t) => t.id === req.params.id);
   if (!thread) {
@@ -52,7 +52,7 @@ router.get("/:id", requireAuth, (req, res) => {
   return res.status(200).json(thread);
 });
 
-// ── 4.6 POST /api/threads/:id/messages ────────────────────────────────────────
+// Send message in thread
 router.post("/:id/messages", requireAuth, (req, res) => {
   const thread = db.threads.find((t) => t.id === req.params.id);
   if (!thread) {

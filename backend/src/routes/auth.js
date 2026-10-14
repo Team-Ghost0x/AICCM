@@ -14,7 +14,7 @@ import { signToken, requireAuth } from "../auth.js";
 
 export const router = Router();
 
-// ── Helper: public user shape ────────────────────────────────────────────────
+// Helper: filter public user profile fields
 function publicUser(user) {
   const creator = user.role === "creator"
     ? db.creators.find((c) => c.displayName === user.name || c.displayName === user.company || c.handle === (user.company || "").toLowerCase().replace(/[^a-z0-9]+/g, "-"))
@@ -32,7 +32,7 @@ function publicUser(user) {
   };
 }
 
-// ── 1.1 POST /api/auth/register ──────────────────────────────────────────────
+// Register new account
 router.post("/register", async (req, res) => {
   try {
     const { email, password, name, company, role } = req.body;
@@ -132,7 +132,7 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// ── 1.2 POST /api/auth/login ─────────────────────────────────────────────────
+// User authentication
 router.post("/login", async (req, res) => {
   try {
     const { email, password, provider, idToken, role } = req.body;
@@ -182,7 +182,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// ── 1.3 POST /api/auth/logout ────────────────────────────────────────────────
+// Session logout
 router.post("/logout", requireAuth, (req, res) => {
   db.revokedTokens.add(req.token);
   db.addAuditLog("AUTH", req.user.userId, `User ${req.user.email} logged out`);
@@ -192,7 +192,7 @@ router.post("/logout", requireAuth, (req, res) => {
   });
 });
 
-// ── 1.4 GET /api/auth/me ─────────────────────────────────────────────────────
+// Current user profile
 router.get("/me", requireAuth, (req, res) => {
   const user = db.findUserById(req.user.userId);
   if (!user) {
@@ -209,7 +209,7 @@ router.get("/me", requireAuth, (req, res) => {
   });
 });
 
-// ── 1.5 PATCH /api/auth/role ─────────────────────────────────────────────────
+// Active role switcher
 router.patch("/role", requireAuth, (req, res) => {
   const { role } = req.body;
   const validRoles = ["brand", "creator", "admin"];

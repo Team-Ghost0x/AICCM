@@ -14,7 +14,7 @@ import { requireAuth, requireRole, optionalAuth } from "../auth.js";
 
 export const router = Router();
 
-// ── Brief draft parser: extracts structured metadata from natural language ────
+// Helper: extracts structured parameters from natural language descriptions
 function parseBriefIdea(idea) {
   const text = idea.toLowerCase();
 
@@ -103,7 +103,7 @@ function generateQuestions(idea) {
   return questions;
 }
 
-// ── 3.1 POST /api/briefs/draft ────────────────────────────────────────────────
+// Generate structured brief draft from concept
 router.post("/draft", (req, res) => {
   const { idea } = req.body;
 
@@ -120,7 +120,7 @@ router.post("/draft", (req, res) => {
   return res.status(200).json({ draft, questions });
 });
 
-// ── 3.2 POST /api/briefs ──────────────────────────────────────────────────────
+// Publish creative brief
 router.post("/", requireAuth, requireRole("brand", "admin"), async (req, res) => {
   const {
     title,
@@ -173,7 +173,7 @@ router.post("/", requireAuth, requireRole("brand", "admin"), async (req, res) =>
   return res.status(201).json(newBrief);
 });
 
-// ── 3.3 GET /api/briefs ───────────────────────────────────────────────────────
+// Get briefs list with filters
 router.get("/", optionalAuth, (req, res) => {
   const { status, brandId, limit = 20, offset = 0 } = req.query;
 
@@ -205,7 +205,7 @@ router.get("/", optionalAuth, (req, res) => {
   return res.status(200).json({ briefs: paginated, total });
 });
 
-// ── 3.4 GET /api/briefs/:id ───────────────────────────────────────────────────
+// Get brief details
 router.get("/:id", optionalAuth, (req, res) => {
   const brief = db.briefs.find((b) => b.id === req.params.id);
   if (!brief) {
@@ -214,7 +214,7 @@ router.get("/:id", optionalAuth, (req, res) => {
   return res.status(200).json(brief);
 });
 
-// ── 3.5 PATCH /api/briefs/:id ─────────────────────────────────────────────────
+// Update brief
 router.patch("/:id", requireAuth, requireRole("brand", "admin"), (req, res) => {
   const brief = db.briefs.find((b) => b.id === req.params.id);
   if (!brief) {
@@ -243,7 +243,7 @@ router.patch("/:id", requireAuth, requireRole("brand", "admin"), (req, res) => {
   return res.status(200).json(brief);
 });
 
-// ── 3.6 GET /api/briefs/:id/matches ───────────────────────────────────────────
+// Algorithmic creator matching for brief
 router.get("/:id/matches", requireAuth, (req, res) => {
   const brief = db.briefs.find((b) => b.id === req.params.id);
   if (!brief) {
@@ -349,7 +349,7 @@ router.get("/:id/matches", requireAuth, (req, res) => {
   return res.status(200).json(scored);
 });
 
-// ── 3.7 GET /api/briefs/:id/applications ─────────────────────────────────────
+// Get applications for a brief
 router.get("/:id/applications", requireAuth, (req, res) => {
   const brief = db.briefs.find((b) => b.id === req.params.id);
   if (!brief) {
@@ -370,7 +370,7 @@ router.get("/:id/applications", requireAuth, (req, res) => {
   return res.status(200).json({ applications: apps, total: apps.length });
 });
 
-// ── 3.8 POST /api/briefs/:id/applications ────────────────────────────────────
+// Submit application proposal
 router.post("/:id/applications", requireAuth, requireRole("creator"), (req, res) => {
   const brief = db.briefs.find((b) => b.id === req.params.id);
   if (!brief) {
@@ -432,7 +432,7 @@ router.post("/:id/applications", requireAuth, requireRole("creator"), (req, res)
   return res.status(201).json(newApp);
 });
 
-// ── 3.9 PATCH /api/briefs/:id/applications/:appId ────────────────────────────
+// Update proposal status
 router.patch("/:id/applications/:appId", requireAuth, (req, res) => {
   const brief = db.briefs.find((b) => b.id === req.params.id);
   if (!brief) {

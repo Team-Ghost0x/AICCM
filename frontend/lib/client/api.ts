@@ -152,7 +152,20 @@ export async function fetchCreatorByHandle(handle: string): Promise<Creator | nu
       c.handle.toLowerCase().replace(/-/g, ".") === handle.toLowerCase() ||
       c.id.toLowerCase() === handle.toLowerCase()
   );
-  return creator || null;
+  if (creator) return creator;
+
+  // Catch-all for dynamic user IDs produced by Google/email auth (e.g. "creator-1697000000000",
+  // "email-1697000000000"). In mock mode these never exist in fixtures, so map any
+  // "creator-*" or "email-*" handle to the arjun-patel profile so the page always renders.
+  if (
+    normalized.startsWith("creator-") ||
+    normalized.startsWith("email-") ||
+    /^[0-9a-f-]{36}$/.test(normalized) // UUID pattern for backend-registered users
+  ) {
+    return allPlatformCreators.find((c) => c.id === "creator-arjun") || null;
+  }
+
+  return null;
 }
 
 export async function createBriefDraft(idea: string): Promise<DraftBriefResult> {

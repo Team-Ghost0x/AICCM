@@ -151,9 +151,7 @@ export default function HomePage() {
           </Link>
         </div>
       )}
-      {/* ======================================================== */}
-      {/* 1. HERO SECTION                                          */}
-      {/* ======================================================== */}
+      {/* Hero section */}
       <section className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12 pt-2 md:pt-4">
         {/* Left Column: Value Proposition & Dual CTAs */}
         <div className="flex-1 flex flex-col gap-5 text-left">
@@ -322,9 +320,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ======================================================== */}
-      {/* 2. SPECIALIZATION CATEGORIES (Meta Topic Cards)          */}
-      {/* ======================================================== */}
+      {/* Specialization Categories */}
       <section className="flex flex-col gap-6">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-[var(--border)] pb-3">
           <div>
@@ -373,9 +369,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ======================================================== */}
-      {/* 3. HOW IT WORKS (Meta 4-Step Process)                    */}
-      {/* ======================================================== */}
+      {/* How it works */}
       <section className="bg-[var(--surface)] border border-[var(--border)] rounded-3xl p-6 sm:p-8 shadow-xs">
         <div className="text-center max-w-2xl mx-auto mb-8">
           <span className="text-xs font-mono font-bold uppercase tracking-wider text-[var(--link-aa)]">
@@ -436,9 +430,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ======================================================== */}
-      {/* 4. PRODUCTION WORKFLOW PROOF (Meta Reels Studio Layout)   */}
-      {/* ======================================================== */}
+      {/* Production Workflow & Take Scrubber */}
       <section className="bg-[var(--surface)] border border-[var(--border)] rounded-3xl p-6 sm:p-8 shadow-xs flex flex-col gap-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[var(--border)] pb-4">
           <div className="flex flex-col gap-1">
@@ -725,9 +717,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ======================================================== */}
-      {/* 5. CREATOR DISCOVERY PREVIEW (Meta GigCards)             */}
-      {/* ======================================================== */}
+      {/* Featured Creators Discovery */}
       <section className="flex flex-col gap-6">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-[var(--border)] pb-3">
           <div>
@@ -754,9 +744,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ======================================================== */}
-      {/* 6. FINAL CALL TO ACTION (Meta Surface Design)            */}
-      {/* ======================================================== */}
+      {/* Call to Action */}
       <section className="bg-[var(--surface)] border border-[var(--border)] rounded-3xl p-8 sm:p-12 text-center flex flex-col items-center gap-5 shadow-xs">
         <span className="text-xs font-mono font-bold uppercase tracking-wider text-[var(--link-aa)]">
           Start Commissioning Today

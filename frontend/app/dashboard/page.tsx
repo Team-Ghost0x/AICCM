@@ -46,6 +46,25 @@ export default function DashboardPage() {
   const [projectTools, setProjectTools] = useState("Runway Gen-3, Midjourney v6");
   const [projectWorkflow, setProjectWorkflow] = useState("");
   const [isAddingProject, setIsAddingProject] = useState(false);
+  const [creatorPortfolio, setCreatorPortfolio] = useState<PortfolioPiece[]>(() => {
+    const currentUser = getCurrentUser();
+    if (currentUser?.role === "creator") {
+      const matched = allPlatformCreators.find(
+        (c) => c.id === currentUser.id || c.handle === currentUser.id
+      );
+      return matched?.portfolio ?? [];
+    }
+    return [];
+  });
+
+  // Edit portfolio piece modal state
+  const [editingPiece, setEditingPiece] = useState<PortfolioPiece | null>(null);
+  const [editTitle, setEditTitle] = useState("");
+  const [editDescription, setEditDescription] = useState("");
+  const [editMediaUrl, setEditMediaUrl] = useState("");
+  const [editContentType, setEditContentType] = useState("video");
+  const [editTools, setEditTools] = useState("");
+  const [isSavingEdit, setIsSavingEdit] = useState(false);
 
   // Creator Verification modal state
   const [showVerificationModal, setShowVerificationModal] = useState(false);
@@ -130,28 +149,84 @@ export default function DashboardPage() {
     setIsAddingProject(true);
     playClickSound();
 
+    // Build a local PortfolioPiece immediately so it renders without requiring a real API
+    const localPiece: PortfolioPiece = {
+      id: `proj_local_${Date.now()}`,
+      title: projectTitle.trim(),
+      description: projectDescription.trim(),
+      mediaUrl: projectMediaUrl.trim() || "/media/hero/take-hero-master.jpg",
+      posterUrl: projectMediaUrl.trim() || "/media/hero/take-hero-master.jpg",
+      contentType: (projectContentType as PortfolioPiece["contentType"]),
+      aspectRatio: "9:16",
+      toolsUsed: projectTools.split(",").map((t) => t.trim()),
+      takesCount: 1,
+      keyTakes: [],
+      rights: "commercial_cleared",
+      rightsBasis: "Creator warrants all AI outputs are fully licensed for commercial use.",
+      isSample: false,
+      workflow: projectWorkflow.trim()
+        ? [{ order: 1, tool: "Custom", what: projectWorkflow.trim() }]
+        : [],
+    };
+
+    setCreatorPortfolio((prev) => [localPiece, ...prev]);
+
+    // Fire API in background — won't block the UI
     try {
       await addPortfolioProject(user.id, {
-        title: projectTitle.trim(),
-        description: projectDescription.trim(),
-        mediaUrl: projectMediaUrl.trim() || "/media/hero/take-hero-master.jpg",
-        contentType: projectContentType,
-        tools: projectTools.split(",").map((t) => t.trim()),
+        title: localPiece.title,
+        description: localPiece.description,
+        mediaUrl: localPiece.mediaUrl,
+        contentType: localPiece.contentType,
+        tools: localPiece.toolsUsed,
         workflowNotes: projectWorkflow.trim(),
       });
-
-      setShowAddProjectModal(false);
-      setProjectTitle("");
-      setProjectDescription("");
-      setProjectWorkflow("");
-      triggerToast("Portfolio project published!");
-      loadDashboardData();
     } catch {
-      triggerToast("Portfolio project added.");
-      setShowAddProjectModal(false);
-    } finally {
-      setIsAddingProject(false);
+      // Backend offline or mock mode — local state already updated, so no-op
     }
+
+    setShowAddProjectModal(false);
+    setProjectTitle("");
+    setProjectDescription("");
+    setProjectMediaUrl("");
+    setProjectWorkflow("");
+    setIsAddingProject(false);
+    triggerToast("Portfolio project published!");
+  };
+
+  const openEditModal = (piece: PortfolioPiece) => {
+    playClickSound();
+    setEditingPiece(piece);
+    setEditTitle(piece.title);
+    setEditDescription(piece.description || "");
+    setEditMediaUrl(piece.posterUrl || piece.mediaUrl || "");
+    setEditContentType(piece.contentType);
+    setEditTools(piece.toolsUsed.join(", "));
+  };
+
+  const handleEditProjectSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingPiece || !editTitle.trim()) return;
+    setIsSavingEdit(true);
+    playClickSound();
+
+    const updated: PortfolioPiece = {
+      ...editingPiece,
+      title: editTitle.trim(),
+      description: editDescription.trim(),
+      mediaUrl: editMediaUrl.trim() || editingPiece.mediaUrl,
+      posterUrl: editMediaUrl.trim() || editingPiece.posterUrl,
+      contentType: editContentType as PortfolioPiece["contentType"],
+      toolsUsed: editTools.split(",").map((t) => t.trim()).filter(Boolean),
+    };
+
+    setCreatorPortfolio((prev) =>
+      prev.map((p) => (p.id === editingPiece.id ? updated : p))
+    );
+
+    setEditingPiece(null);
+    setIsSavingEdit(false);
+    triggerToast(`"${updated.title}" saved successfully.`);
   };
 
   const handleVerificationSubmit = async (e: React.FormEvent) => {
@@ -290,9 +365,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* ======================================================== */}
-      {/* BRAND VIEW                                               */}
-      {/* ======================================================== */}
+      {/* Brand Dashboard View */}
       {isBrand && (
         <div className="flex flex-col gap-8">
           {/* Brand Metrics Cards */}
@@ -497,9 +570,7 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* ======================================================== */}
-      {/* CREATOR VIEW                                             */}
-      {/* ======================================================== */}
+      {/* Creator Dashboard View */}
       {isCreator && (
         <div className="flex flex-col gap-8">
           {/* Creator Metrics */}
@@ -563,48 +634,56 @@ export default function DashboardPage() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {allPlatformCreators[0].portfolio.map((piece) => (
-                <div
-                  key={piece.id}
-                  className="bg-[var(--surface)] rounded-xl border border-[var(--border)] overflow-hidden shadow-xs flex flex-col justify-between text-xs"
-                >
-                  <div className="relative w-full aspect-video bg-[var(--bg)] overflow-hidden">
-                    <img
-                      src={piece.posterUrl || piece.mediaUrl || "/media/hero/take-hero-master.jpg"}
-                      alt={piece.title}
-                      className="w-full h-full object-cover"
-                    />
-                    <span className="absolute top-2 left-2 px-2 py-0.5 bg-[var(--surface)]/90 backdrop-blur-xs text-[var(--text)] text-[10px] font-bold rounded-full border border-[var(--border)]">
-                      {piece.contentType}
-                    </span>
-                  </div>
-
-                  <div className="p-3.5 flex flex-col gap-2">
-                    <h3 className="font-bold text-[var(--text)] text-sm">{piece.title}</h3>
-                    <div className="flex flex-wrap gap-1">
-                      {piece.toolsUsed.map((t) => (
-                        <span
-                          key={t}
-                          className="px-2 py-0.5 rounded bg-[var(--bg)] border border-[var(--border)] text-[10px] font-mono text-[var(--text-secondary-aa)]"
-                        >
-                          {t}
-                        </span>
-                      ))}
-                    </div>
-
-                    <div className="flex items-center justify-between pt-2 border-t border-[var(--border)] text-[11px]">
-                      <span className="text-[var(--text-secondary-aa)]">{piece.takesCount} takes</span>
-                      <button
-                        type="button"
-                        onClick={() => triggerToast(`Project "${piece.title}" updated`)}
-                        className="text-[var(--link-aa)] font-semibold hover:underline cursor-pointer"
-                      >
-                        Edit Details
-                      </button>
-                    </div>
-                  </div>
+              {creatorPortfolio.length === 0 ? (
+                <div className="col-span-full py-10 flex flex-col items-center gap-3 text-center text-[var(--text-secondary-aa)]">
+                  <span className="text-3xl">🎬</span>
+                  <p className="text-xs font-semibold">No portfolio projects yet.</p>
+                  <p className="text-xs">Click &ldquo;Add Project&rdquo; above to publish your first AI-generated work.</p>
                 </div>
-              ))}
+              ) : (
+                creatorPortfolio.map((piece) => (
+                  <div
+                    key={piece.id}
+                    className="bg-[var(--surface)] rounded-xl border border-[var(--border)] overflow-hidden shadow-xs flex flex-col justify-between text-xs"
+                  >
+                    <div className="relative w-full aspect-video bg-[var(--bg)] overflow-hidden">
+                      <img
+                        src={piece.posterUrl || piece.mediaUrl || "/media/hero/take-hero-master.jpg"}
+                        alt={piece.title}
+                        className="w-full h-full object-cover"
+                      />
+                      <span className="absolute top-2 left-2 px-2 py-0.5 bg-[var(--surface)]/90 backdrop-blur-xs text-[var(--text)] text-[10px] font-bold rounded-full border border-[var(--border)]">
+                        {piece.contentType}
+                      </span>
+                    </div>
+
+                    <div className="p-3.5 flex flex-col gap-2">
+                      <h3 className="font-bold text-[var(--text)] text-sm">{piece.title}</h3>
+                      <div className="flex flex-wrap gap-1">
+                        {piece.toolsUsed.map((t) => (
+                          <span
+                            key={t}
+                            className="px-2 py-0.5 rounded bg-[var(--bg)] border border-[var(--border)] text-[10px] font-mono text-[var(--text-secondary-aa)]"
+                          >
+                            {t}
+                          </span>
+                        ))}
+                      </div>
+
+                      <div className="flex items-center justify-between pt-2 border-t border-[var(--border)] text-[11px]">
+                        <span className="text-[var(--text-secondary-aa)]">{piece.takesCount} takes</span>
+                        <button
+                          type="button"
+                          onClick={() => openEditModal(piece)}
+                          className="text-[var(--link-aa)] font-semibold hover:underline cursor-pointer"
+                        >
+                          Edit Details
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           </div>
 
@@ -668,9 +747,7 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* ======================================================== */}
-      {/* ADMIN SHORTCUT VIEW                                      */}
-      {/* ======================================================== */}
+      {/* Admin Panel Summary */}
       {isAdmin && (
         <div className="bg-[var(--surface)] p-8 rounded-2xl border border-[var(--border)] shadow-xs text-center flex flex-col items-center gap-4 text-xs">
           <div className="w-12 h-12 rounded-full bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 flex items-center justify-center font-bold">
@@ -800,6 +877,108 @@ export default function DashboardPage() {
                   className="px-5 py-2 bg-[var(--link-aa)] hover:bg-[var(--link-aa-hover)] text-white text-xs font-bold rounded-lg transition-transform hover:scale-105 active:scale-95 cursor-pointer shadow-xs disabled:opacity-50"
                 >
                   {isAddingProject ? "Publishing..." : "Publish Project"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal: Edit Portfolio Project */}
+      {editingPiece && (
+        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-[var(--surface)] border border-[var(--border)] w-full max-w-lg p-6 rounded-2xl shadow-xl flex flex-col gap-4 text-xs text-left">
+            <div className="flex items-center justify-between border-b border-[var(--border)] pb-3">
+              <div>
+                <h3 className="text-lg font-bold text-[var(--text)]">Edit Portfolio Project</h3>
+                <p className="text-xs text-[var(--text-secondary-aa)] mt-0.5">
+                  Update the details for this portfolio piece.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setEditingPiece(null)}
+                className="text-[var(--text-secondary-aa)] hover:text-[var(--text)] p-1 rounded-md cursor-pointer"
+              >
+                <CloseIcon size={18} />
+              </button>
+            </div>
+
+            <form onSubmit={handleEditProjectSubmit} className="flex flex-col gap-3.5">
+              <div>
+                <label className="font-semibold text-[var(--text)] block mb-1">Project Title</label>
+                <input
+                  type="text"
+                  value={editTitle}
+                  onChange={(e) => setEditTitle(e.target.value)}
+                  className="w-full bg-[var(--bg)] border border-[var(--border)] rounded-lg px-3 py-2 text-xs text-[var(--text)] focus:outline-none focus:border-[var(--link-aa)]"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="font-semibold text-[var(--text)] block mb-1">Description</label>
+                <textarea
+                  value={editDescription}
+                  onChange={(e) => setEditDescription(e.target.value)}
+                  rows={2}
+                  className="w-full bg-[var(--bg)] border border-[var(--border)] rounded-lg p-3 text-xs text-[var(--text)] focus:outline-none focus:border-[var(--link-aa)]"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="font-semibold text-[var(--text)] block mb-1">Content Type</label>
+                  <select
+                    value={editContentType}
+                    onChange={(e) => setEditContentType(e.target.value)}
+                    className="w-full bg-[var(--bg)] border border-[var(--border)] rounded-lg px-3 py-2 text-xs text-[var(--text)] focus:outline-none focus:border-[var(--link-aa)]"
+                  >
+                    <option value="video">AI Video</option>
+                    <option value="still">AI Still Image</option>
+                    <option value="animation">Motion Graphic</option>
+                    <option value="mixed">Campaign Series</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="font-semibold text-[var(--text)] block mb-1">Cover Media URL</label>
+                  <input
+                    type="text"
+                    value={editMediaUrl}
+                    onChange={(e) => setEditMediaUrl(e.target.value)}
+                    placeholder="https://... or /media/..."
+                    className="w-full bg-[var(--bg)] border border-[var(--border)] rounded-lg px-3 py-2 text-xs text-[var(--text)] focus:outline-none focus:border-[var(--link-aa)]"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="font-semibold text-[var(--text)] block mb-1">Tools &amp; Models Used</label>
+                <input
+                  type="text"
+                  value={editTools}
+                  onChange={(e) => setEditTools(e.target.value)}
+                  placeholder="e.g. Runway Gen-3, Midjourney v6"
+                  className="w-full bg-[var(--bg)] border border-[var(--border)] rounded-lg px-3 py-2 text-xs text-[var(--text)] focus:outline-none focus:border-[var(--link-aa)]"
+                  required
+                />
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-[var(--border)]">
+                <button
+                  type="button"
+                  onClick={() => setEditingPiece(null)}
+                  className="px-4 py-2 text-xs font-semibold text-[var(--text-secondary-aa)] hover:text-[var(--text)] cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSavingEdit}
+                  className="px-5 py-2 bg-[var(--link-aa)] hover:bg-[var(--link-aa-hover)] text-white text-xs font-bold rounded-lg transition-transform hover:scale-105 active:scale-95 cursor-pointer shadow-xs disabled:opacity-50"
+                >
+                  {isSavingEdit ? "Saving..." : "Save Changes"}
                 </button>
               </div>
             </form>

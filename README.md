@@ -26,6 +26,15 @@
 | **Data & Storage** | Dual-mode: In-Memory / Relational MySQL database with audit trail logging |
 | **Testing** | **Vitest**, **JSDOM**, **Testing Library** (12 suites, 73 unit & integration tests) |
 
+## 🛠️ Engineering Methodology: Human Architecture & AI-Assisted Tooling
+
+This platform was designed and engineered using modern fullstack software engineering practices, combining deep human architectural design with AI-assisted developer acceleration:
+
+- **Human Systems Design & Architecture**: The core system architecture—including the domain data schemas, multi-stage escrow state machine, RESTful API specifications, and custom CSS design system—was designed and architected by our engineering team to solve real-world enterprise creative bottlenecks.
+- **Custom Interactive Components**: The signature **Take Scrubber** was engineered with custom keyboard navigation (`J`/`K` shortcuts) and responsive frame controls, built with zero heavy external UI dependencies to ensure 60fps interaction.
+- **AI-Assisted Acceleration**: We utilized modern developer AI tooling (such as GitHub Copilot and code assistants) as force multipliers to accelerate boilerplate scaffolding, mock fixture authoring, and unit test coverage.
+- **Rigor & Security**: All business logic—from the algorithmic vector matching scorer to RBAC authentication, rate limiting, and SHA-256 certificate hashing—was manually implemented, profiled, and verified with **73 automated unit and integration tests**.
+
 ---
 
 ## 🚀 Quick Start & Local Run

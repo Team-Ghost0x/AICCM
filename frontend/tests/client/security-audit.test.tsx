@@ -11,9 +11,7 @@ describe("Double Security Scan: Authentication, PIN Gate & Data Hygiene", () => 
     localStorage.clear();
   });
 
-  /* =====================================================================
-   * SECURITY SCAN 1: AUTHENTICATION & ACCESS CONTROL (ADMIN PIN '0000')
-   * ===================================================================== */
+  // Admin PIN Gate access control tests
   describe("Scan 1: Admin Passcode '0000' & Access Control Gate", () => {
     it("blocks access to protected admin children when locked", () => {
       render(
@@ -110,9 +108,7 @@ describe("Double Security Scan: Authentication, PIN Gate & Data Hygiene", () => 
     });
   });
 
-  /* =====================================================================
-   * SECURITY SCAN 2: DATA HYGIENE, INPUT SANITIZATION & SAFE STATE
-   * ===================================================================== */
+  // Input sanitization and data validation tests
   describe("Scan 2: Input Sanitization, XSS Mitigation & Persona Integrity", () => {
     it("sanitizes malicious script tags and HTML injection vectors", () => {
       const maliciousScript = "<script>alert('XSS')</script>Hello World";

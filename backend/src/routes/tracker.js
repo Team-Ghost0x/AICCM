@@ -13,7 +13,7 @@ import { requireAuth, requireRole } from "../auth.js";
 
 export const router = Router();
 
-// ── Helper: get or auto-create tracker for a brief ───────────────────────────
+// Helper: find or initialize tracker
 function getOrCreateTracker(briefId, userId) {
   let tracker = db.findTrackerByBriefId(briefId);
 
@@ -40,7 +40,7 @@ function getOrCreateTracker(briefId, userId) {
   return tracker;
 }
 
-// ── 6.1 GET /api/tracker/:briefId ────────────────────────────────────────────
+// Milestone progress & submitted takes
 router.get("/:briefId", requireAuth, (req, res) => {
   const tracker = db.findTrackerByBriefId(req.params.briefId);
 
@@ -67,7 +67,7 @@ router.get("/:briefId", requireAuth, (req, res) => {
   return res.status(200).json(tracker);
 });
 
-// ── 6.2 POST /api/tracker/:briefId/takes ─────────────────────────────────────
+// Submit new iteration take
 router.post("/:briefId/takes", requireAuth, requireRole("creator", "admin"), (req, res) => {
   const brief = db.briefs.find((b) => b.id === req.params.briefId);
   if (!brief) {
@@ -119,7 +119,7 @@ router.post("/:briefId/takes", requireAuth, requireRole("creator", "admin"), (re
   return res.status(201).json(newTake);
 });
 
-// ── 6.3 PATCH /api/tracker/:briefId/takes/:n ─────────────────────────────────
+// Review take (approve / request revisions)
 router.patch("/:briefId/takes/:n", requireAuth, requireRole("brand", "admin"), (req, res) => {
   const tracker = db.findTrackerByBriefId(req.params.briefId);
   if (!tracker) {
@@ -163,7 +163,7 @@ router.patch("/:briefId/takes/:n", requireAuth, requireRole("brand", "admin"), (
   return res.status(200).json(take);
 });
 
-// ── 6.4 POST /api/tracker/:briefId/deliverables/approve ──────────────────────
+// Final deliverable sign-off
 router.post("/:briefId/deliverables/approve", requireAuth, requireRole("brand", "admin"), (req, res) => {
   const tracker = db.findTrackerByBriefId(req.params.briefId);
   if (!tracker) {

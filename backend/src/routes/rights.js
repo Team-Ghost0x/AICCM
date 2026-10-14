@@ -11,7 +11,7 @@ import { requireAuth } from "../auth.js";
 
 export const router = Router();
 
-// ── 7.1 POST /api/rights/verify ───────────────────────────────────────────────
+// Generate cryptographic commercial rights certificate
 router.post("/verify", requireAuth, (req, res) => {
   const { campaignTitle, brandName, creatorId, commercialUse } = req.body;
 
@@ -77,7 +77,7 @@ router.post("/verify", requireAuth, (req, res) => {
   });
 });
 
-// ── 7.2 GET /api/rights/certificates/:certId ─────────────────────────────────
+// Verify certificate authenticity
 router.get("/certificates/:certId", (req, res) => {
   const cert = db.rightsCertificates.find((c) => c.id === req.params.certId);
 

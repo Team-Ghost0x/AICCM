@@ -38,9 +38,7 @@ export function CreatorProfileView({ creator }: CreatorProfileViewProps) {
 
   return (
     <div className="w-full text-left py-4 md:py-8 px-4 sm:px-6 lg:px-8 max-w-[1360px] mx-auto">
-      {/* ======================================================== */}
-      {/* 1. INSTAGRAM / META STYLE MINIMALIST PROFILE HEADER      */}
-      {/* ======================================================== */}
+      {/* Profile Header */}
       <section className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-6 sm:p-8 shadow-xs mb-8 transition-colors">
         <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 max-w-[840px]">
@@ -163,9 +161,7 @@ export function CreatorProfileView({ creator }: CreatorProfileViewProps) {
         </div>
       </section>
 
-      {/* ======================================================== */}
-      {/* 2. MAIN LAYOUT: ACTIVE TAB CONTENT + STICKY FIVERR HIRE  */}
-      {/* ======================================================== */}
+      {/* Main Tab Content & Sidebar */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left / Center Tab Content (8 cols on lg) */}
         <div className="lg:col-span-8 flex flex-col gap-8">

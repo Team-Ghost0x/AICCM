@@ -22,7 +22,7 @@ const __dirname = dirname(__filename);
 const DATA_DIR = join(__dirname, "../data");
 const DB_FILE = join(DATA_DIR, "db.json");
 
-// ── Seed Users ────────────────────────────────────────────────────────────────
+// Default seed users
 const PASSWORD_HASH = "$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi"; // "password"
 
 const SEED_USERS = [
@@ -105,14 +105,14 @@ const SEED_USERS = [
   },
 ];
 
-// ── Seed Creators ─────────────────────────────────────────────────────────────
+// Default seed creators
 const SEED_CREATORS = [
   {
     id: "creator-mira",
     handle: "mira-okonkwo",
     displayName: "Mira Okonkwo",
     headline: "AI Director for Cyberpunk, Sci-Fi Worldbuilding & Neural Cinema",
-    bio: "Builds photorealistic sci-fi cinematic sequences and cybernetic worldbuilding. Shows every take, because worldbuilding solidifies through rigorous visual iteration.",
+    bio: "Freelance AI director focusing on sci-fi cinematic sequences and worldbuilding. I share my iteration takes to show prompt evolution and style consistency across drafts.",
     location: "Neo-Kyoto / Lagos",
     avatarUrl: "/media/hero/take-3.jpg",
     specializations: ["ai_film", "motion_graphics"],
@@ -266,7 +266,7 @@ const SEED_CREATORS = [
     handle: "dev-verma",
     displayName: "Dev Verma",
     headline: "Editorial fashion and luxury commercial worldbuilder",
-    bio: "Directs high-concept fashion lookbooks and cinematic brand visuals. Obsessive attention to garment physics, fabric caustics, and lighting coherence.",
+    bio: "Fashion and music video director. Specializing in high-concept lookbooks with close attention to garment styling, fabric detail, and cinematic lighting.",
     location: "Mumbai, India",
     avatarUrl: "/media/pieces/piece-5.jpg",
     specializations: ["fashion_lookbook", "product_ads"],
@@ -314,7 +314,7 @@ const SEED_CREATORS = [
     handle: "kabir-nair",
     displayName: "Kabir Nair",
     headline: "Neural VFX & Sci-Fi Cinematographer",
-    bio: "Pioneering generative photoreal cinematic shots, cybernetic drone plates, and atmospheric lighting rigs for streaming series and concept films.",
+    bio: "Cinematographer and VFX artist creating photoreal cinematic sequences and atmospheric concept plates for film and digital campaigns.",
     location: "Bengaluru, India",
     avatarUrl: "/media/hero/take-4.jpg",
     specializations: ["ai_film", "motion_graphics"],
@@ -438,7 +438,7 @@ const SEED_CREATORS = [
   },
 ];
 
-// ── Seed Briefs ───────────────────────────────────────────────────────────────
+// Default seed briefs
 const SEED_BRIEFS = [
   {
     id: "br_4401",
@@ -550,7 +550,7 @@ const SEED_BRIEFS = [
   },
 ];
 
-// ── Seed Communication Requests ───────────────────────────────────────────────
+// Default seed requests
 const SEED_COMMUNICATION_REQUESTS = [
   {
     id: "req_001",
@@ -592,7 +592,7 @@ const SEED_COMMUNICATION_REQUESTS = [
   },
 ];
 
-// ── Seed Threads ──────────────────────────────────────────────────────────────
+// Default seed message threads
 const SEED_THREADS = [
   {
     id: "th_001",
@@ -678,7 +678,7 @@ const SEED_THREADS = [
   },
 ];
 
-// ── Seed Wallet Transactions ──────────────────────────────────────────────────
+// Default seed transactions
 const SEED_WALLET_TRANSACTIONS = [
   {
     id: "tx_8810",
@@ -722,7 +722,7 @@ const SEED_WALLET_TRANSACTIONS = [
   },
 ];
 
-// ── Seed Trackers ─────────────────────────────────────────────────────────────
+// Default seed trackers
 const SEED_TRACKERS = [
   {
     id: "eng_901",
@@ -775,7 +775,7 @@ const SEED_TRACKERS = [
   },
 ];
 
-// ── Seed Rights Certificates ──────────────────────────────────────────────────
+// Default seed rights certificates
 const SEED_RIGHTS_CERTIFICATES = [
   {
     id: "RTK-CERT-148F-2026",
@@ -804,7 +804,7 @@ const SEED_RIGHTS_CERTIFICATES = [
   },
 ];
 
-// ── Seed Audit Logs ───────────────────────────────────────────────────────────
+// Default seed audit logs
 const SEED_AUDIT_LOGS = [
   {
     id: "log_001",
@@ -1103,7 +1103,7 @@ class PersistentDB {
     }
   }
 
-  // ── Async Direct MySQL Mutators ─────────────────────────────────────────────
+  // Direct MySQL mutators
   async addBrief(brief) {
     this.briefs.unshift(brief);
     this.save();
@@ -1192,7 +1192,7 @@ class PersistentDB {
     this.save();
   }
 
-  // ── User Helpers ────────────────────────────────────────────────────────────
+  // User helper methods
   findUserById(id) {
     return this.users.find((u) => u.id === id) || null;
   }
@@ -1202,7 +1202,7 @@ class PersistentDB {
     return this.users.find((u) => u.email.toLowerCase() === email.toLowerCase()) || null;
   }
 
-  // ── Creator Helpers ─────────────────────────────────────────────────────────
+  // Creator helper methods
   findCreatorByHandle(handle) {
     if (!handle) return null;
     const norm = handle.toLowerCase().replace(/\./g, "-");
@@ -1229,12 +1229,12 @@ class PersistentDB {
     return this.creators.find((c) => c.id === id || c.handle === id) || null;
   }
 
-  // ── Tracker Helpers ─────────────────────────────────────────────────────────
+  // Tracker helper methods
   findTrackerByBriefId(briefId) {
     return this.trackers.find((t) => t.briefId === briefId) || null;
   }
 
-  // ── Audit Log Helper ────────────────────────────────────────────────────────
+  // Audit log helper
   addAuditLog(tag, actor, message, severity = "info") {
     this.auditLogs.unshift({
       id: `log_${Date.now()}`,

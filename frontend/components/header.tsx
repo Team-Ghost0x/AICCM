@@ -68,10 +68,10 @@ export function AppHeader() {
         (c) => c.id === user.id || c.handle === user.id || (user.email && c.bio.includes(user.email))
       );
       if (match) return `/creators/${match.handle}`;
-      if (user.id === "creator-dev" || user.id === "creator-devin") return "/creators/dev-verma";
-      if (user.id === "creator-arjun") return "/creators/arjun-patel";
+      // Derive a handle from the user's id (e.g. "creator-arjun" -> "/creators/creator-arjun")
+      return `/creators/${user.id}`;
     }
-    return "/creators/arjun-patel";
+    return "/creators";
   })();
 
   const navItems = isAdmin
@@ -108,9 +108,7 @@ export function AppHeader() {
 
   return (
     <>
-      {/* ======================================================== */}
-      {/* 1. TOP HEADER BAR ON DESKTOP & TABLET                    */}
-      {/* ======================================================== */}
+      {/* Top Header Bar (Desktop & Tablet) */}
       <header className="hidden md:flex fixed top-0 left-[72px] lg:left-[244px] right-0 h-14 bg-[var(--surface)]/95 backdrop-blur-md border-b border-[var(--border)] px-6 items-center justify-between z-30 transition-colors">
         {/* Left: Quick Search (Only for Brands) */}
         {isBrand ? (
@@ -216,9 +214,7 @@ export function AppHeader() {
         </div>
       </header>
 
-      {/* ======================================================== */}
-      {/* 2. DESKTOP LEFT SIDEBAR (>= 1024px, 244px wide)          */}
-      {/* ======================================================== */}
+      {/* Desktop Sidebar */}
       <aside className="hidden lg:flex fixed inset-y-0 left-0 w-[244px] bg-[var(--surface)] border-r border-[var(--border)] flex-col justify-between p-4 z-40 transition-colors">
         <div className="flex flex-col gap-5">
           {/* Wordmark (Gradient Text) */}
@@ -350,9 +346,7 @@ export function AppHeader() {
         </div>
       </aside>
 
-      {/* ======================================================== */}
-      {/* 3. TABLET LEFT RAIL (768px - 1023px, 72px wide icon-only)*/}
-      {/* ======================================================== */}
+      {/* Tablet Rail */}
       <aside className="hidden md:flex lg:hidden fixed inset-y-0 left-0 w-[72px] bg-[var(--surface)] border-r border-[var(--border)] flex-col items-center justify-between py-4 z-40 transition-colors">
         <div className="flex flex-col items-center gap-6">
           <Link href="/" className="select-none p-1" aria-label="Retake Home">
@@ -407,9 +401,7 @@ export function AppHeader() {
         </div>
       </aside>
 
-      {/* ======================================================== */}
-      {/* 4. MOBILE APP TOP BAR (< 768px Viewport)                 */}
-      {/* ======================================================== */}
+      {/* Mobile Top Header */}
       <header className="md:hidden sticky top-0 z-30 w-full bg-[var(--surface)]/95 backdrop-blur-md border-b border-[var(--border)] px-4 py-2.5 flex items-center justify-between transition-colors">
         <Link href="/" className="flex items-center gap-1.5" aria-label="Retake Home">
           <span
@@ -478,9 +470,7 @@ export function AppHeader() {
         </div>
       </header>
 
-      {/* ======================================================== */}
-      {/* 5. MOBILE BOTTOM TAB BAR (< 768px, 56-68px tall)         */}
-      {/* ======================================================== */}
+      {/* Mobile Bottom Tab Navigation */}
       <nav
         className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-[var(--surface)]/95 backdrop-blur-md border-t border-[var(--border)] px-2 py-1.5 flex items-center justify-around h-16 select-none"
         aria-label="Mobile Navigation"

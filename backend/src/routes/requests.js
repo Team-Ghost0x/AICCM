@@ -11,7 +11,7 @@ import { requireAuth, requireRole } from "../auth.js";
 
 export const router = Router();
 
-// ── 4.1 GET /api/requests ──────────────────────────────────────────────────────
+// List user communication requests
 router.get("/", requireAuth, (req, res) => {
   const { status } = req.query;
   const userId = req.user.userId;
@@ -27,7 +27,7 @@ router.get("/", requireAuth, (req, res) => {
   return res.status(200).json({ requests, total: requests.length });
 });
 
-// ── 4.2 POST /api/requests ─────────────────────────────────────────────────────
+// Send proposal inquiry to creator
 router.post("/", requireAuth, requireRole("brand", "admin"), (req, res) => {
   const { creatorId, briefId, projectTitle, proposedBudgetInr, targetDeadline, message } = req.body;
 
@@ -78,7 +78,7 @@ router.post("/", requireAuth, requireRole("brand", "admin"), (req, res) => {
   return res.status(201).json(newRequest);
 });
 
-// ── 4.3 PATCH /api/requests/:id ────────────────────────────────────────────────
+// Accept or decline inquiry
 router.patch("/:id", requireAuth, requireRole("creator", "admin"), (req, res) => {
   const request = db.communicationRequests.find((r) => r.id === req.params.id);
   if (!request) {

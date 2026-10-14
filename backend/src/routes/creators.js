@@ -12,7 +12,7 @@ import { requireAuth, requireRole } from "../auth.js";
 
 export const router = Router();
 
-// ── 2.1 GET /api/creators ─────────────────────────────────────────────────────
+// Search & discover creators with facets
 router.get("/", (req, res) => {
   let creators = [...db.creators];
 
@@ -153,7 +153,7 @@ router.get("/", (req, res) => {
   });
 });
 
-// ── 2.2 Saved Creators Shortlist ─────────────────────────────────────────────
+// Saved creators shortlist
 router.get("/saved", requireAuth, (req, res) => {
   const saved = db.savedCreators.filter((s) => s.brandUserId === req.user.userId);
   const savedList = saved.map((s) => {
@@ -201,7 +201,7 @@ router.delete("/saved/:creatorId", requireAuth, (req, res) => {
   return res.status(200).json({ success: true, message: "Creator removed from shortlist" });
 });
 
-// ── 2.3 GET /api/creators/:handle ────────────────────────────────────────────
+// Creator profile dossier
 router.get("/:handle", (req, res) => {
   const creator = db.findCreatorByHandle(req.params.handle);
   if (!creator) {
@@ -210,7 +210,7 @@ router.get("/:handle", (req, res) => {
   return res.status(200).json(creator);
 });
 
-// ── 2.3 POST /api/creators ────────────────────────────────────────────────────
+// Onboard new creator profile
 router.post("/", requireAuth, requireRole("creator", "admin"), (req, res) => {
   const {
     handle,
@@ -277,7 +277,7 @@ router.post("/", requireAuth, requireRole("creator", "admin"), (req, res) => {
   return res.status(201).json(newCreator);
 });
 
-// ── 2.4 PATCH /api/creators/:id ──────────────────────────────────────────────
+// Update creator profile
 router.patch("/:id", requireAuth, requireRole("creator", "admin"), (req, res) => {
   const creator = db.findCreatorById(req.params.id);
   if (!creator) {
@@ -318,7 +318,7 @@ router.patch("/:id", requireAuth, requireRole("creator", "admin"), (req, res) =>
   return res.status(200).json(creator);
 });
 
-// ── 2.5 POST /api/creators/:id/portfolio ──────────────────────────────────────
+// Add portfolio project
 router.post("/:id/portfolio", requireAuth, requireRole("creator", "admin"), (req, res) => {
   const creator = db.findCreatorById(req.params.id) || db.findCreatorByHandle(req.params.id);
   if (!creator) {
@@ -354,7 +354,7 @@ router.post("/:id/portfolio", requireAuth, requireRole("creator", "admin"), (req
   return res.status(201).json(newProject);
 });
 
-// ── 2.6 DELETE /api/creators/:id/portfolio/:projId ────────────────────────────
+// Remove portfolio project
 router.delete("/:id/portfolio/:projId", requireAuth, requireRole("creator", "admin"), (req, res) => {
   const creator = db.findCreatorById(req.params.id) || db.findCreatorByHandle(req.params.id);
   if (!creator) {
@@ -373,7 +373,7 @@ router.delete("/:id/portfolio/:projId", requireAuth, requireRole("creator", "adm
   return res.status(200).json({ success: true, message: "Project deleted from portfolio" });
 });
 
-// ── 2.7 POST /api/creators/:id/verifications ──────────────────────────────────
+// Submit verification evidence
 router.post("/:id/verifications", requireAuth, requireRole("creator"), (req, res) => {
   const creator = db.findCreatorById(req.params.id) || db.findCreatorByHandle(req.params.id);
   if (!creator) {
@@ -408,7 +408,7 @@ router.post("/:id/verifications", requireAuth, requireRole("creator"), (req, res
   return res.status(201).json(newVer);
 });
 
-// ── 2.8 GET /api/creators/:id/verifications ───────────────────────────────────
+// Fetch creator verifications
 router.get("/:id/verifications", requireAuth, (req, res) => {
   const creator = db.findCreatorById(req.params.id) || db.findCreatorByHandle(req.params.id);
   if (!creator) {

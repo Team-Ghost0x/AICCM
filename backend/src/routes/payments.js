@@ -13,7 +13,7 @@ import { requireAuth, requireRole } from "../auth.js";
 
 export const router = Router();
 
-// ── Helper: compute wallet state for a user ──────────────────────────────────
+// Helper: calculate wallet state for user
 function computeWallet(userId) {
   const user = db.findUserById(userId);
   if (!user) return null;
@@ -56,7 +56,7 @@ function computeWallet(userId) {
   };
 }
 
-// ── 5.1 GET /api/payments/wallet ──────────────────────────────────────────────
+// User wallet balance and escrow
 router.get("/wallet", requireAuth, (req, res) => {
   const wallet = computeWallet(req.user.userId);
   if (!wallet) {
@@ -65,7 +65,7 @@ router.get("/wallet", requireAuth, (req, res) => {
   return res.status(200).json(wallet);
 });
 
-// ── 5.2 GET /api/payments/transactions ────────────────────────────────────────
+// Transaction ledger history
 router.get("/transactions", requireAuth, (req, res) => {
   const { limit = 20, offset = 0, type } = req.query;
 
@@ -87,7 +87,7 @@ router.get("/transactions", requireAuth, (req, res) => {
   return res.status(200).json({ transactions: publicTxns, total });
 });
 
-// ── 5.3 POST /api/payments/deposit ────────────────────────────────────────────
+// Deposit funds via UPI or Card
 router.post("/deposit", requireAuth, requireRole("brand", "admin"), (req, res) => {
   const { amountInr, method, vpa, cardLast4 } = req.body;
 
@@ -140,7 +140,7 @@ router.post("/deposit", requireAuth, requireRole("brand", "admin"), (req, res) =
   });
 });
 
-// ── 5.4 POST /api/payments/escrow/lock ────────────────────────────────────────
+// Lock milestone escrow funds
 router.post("/escrow/lock", requireAuth, requireRole("brand", "admin"), (req, res) => {
   const { briefId, creatorId, amountInr, milestoneTitle } = req.body;
 
@@ -203,7 +203,7 @@ router.post("/escrow/lock", requireAuth, requireRole("brand", "admin"), (req, re
   });
 });
 
-// ── 5.5 POST /api/payments/escrow/release ─────────────────────────────────────
+// Release milestone escrow to creator
 router.post("/escrow/release", requireAuth, requireRole("brand", "admin"), (req, res) => {
   const { briefId, creatorId, amountInr, milestoneId } = req.body;
 
