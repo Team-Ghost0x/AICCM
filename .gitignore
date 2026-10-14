@@ -1,3 +1,16 @@
+# AI agent rules & configurations
+.agents/
+AGENTS.md
+*/AGENTS.md
+*.agent*
+.gemini/
+.cursor/
+
+# Internal planning documents
+frontend/docs/
+backend/backend_required_routes.md
+
+# Dependencies & Build Outputs
 node_modules/
 */node_modules/
 .next/
@@ -5,14 +18,16 @@ frontend/.next/
 dist/
 build/
 coverage/
-.DS_Store
-*.log
+.vercel/
+*.tsbuildinfo
+
+# Environment & Local Data
 .env
 .env.*
 .env.local
 !.env.example
-.vercel/
-*.tsbuildinfo
 backend/data/mysql/
 *.sock
 *.pid
+*.log
+.DS_Store
