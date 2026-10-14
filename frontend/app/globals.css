@@ -1,0 +1,386 @@
+@import "tailwindcss";
+
+@theme {
+  --color-surround: var(--surround);
+  --color-panel: var(--panel);
+  --color-panel-elevated: var(--panel-elevated);
+  --color-ink: var(--ink);
+  --color-paper: var(--paper);
+  --color-muted: var(--muted);
+  --color-border: var(--border-color);
+  --color-tally: var(--tally);
+  --color-bar: var(--bar);
+  --font-archivo: var(--font-archivo);
+}
+
+:root {
+  /* Specified palette */
+  --bg: #FAFAFA;                 /* page background */
+  --surface: #FFFFFF;            /* cards, modals, navbar, sidebar */
+  --border: #DBDBDB;             /* dividers and card borders */
+  --text: #262626;              /* primary text */
+  --text-secondary: #8E8E8E;    /* LARGE text, icons, disabled only */
+  --link: #0095F6;              /* large links, icons, focus ring */
+  --accent: #FCAF45;            /* badges, stars, highlights */
+  --gradient-primary: linear-gradient(45deg, #405DE6, #C13584, #FD1D1D);
+
+  /* Derived tokens, required for contrast (WCAG 2.2 AA) */
+  --text-secondary-aa: #6B6B6B;  /* secondary text 16px and below: 5.3:1 on white, 5.1:1 on bg */
+  --link-aa: #0074CC;            /* link text and button fills with white text: 4.8:1 */
+  --link-aa-hover: #005FA8;      /* 6.6:1 */
+  --control-border: #8E8E8E;     /* input, checkbox, radio boundaries: 3.3:1 */
+  --danger-aa: #C41A1A;          /* errors: 6.0:1 on white */
+  --success-aa: #1B7F3B;         /* available / success: 5.1:1 on white */
+  --gradient-text-safe: linear-gradient(45deg, #405DE6, #C13584); /* any surface that carries white text */
+  --gradient-ring: linear-gradient(45deg, #FCAF45, #FD1D1D 35%, #C13584 70%, #405DE6); /* story ring only */
+
+  /* Backwards compatibility aliases for existing components */
+  --surround: var(--bg);
+  --panel: var(--surface);
+  --panel-elevated: var(--surface);
+  --ink: var(--text);
+  --paper: var(--surface);
+  --muted: var(--text-secondary-aa);
+  --border-color: var(--border);
+  --tally: var(--link-aa);
+  --bar: var(--success-aa);
+}
+
+:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Figma Theme Gradient Palette Swatches */
+.bg-aura-gradient {
+  background: linear-gradient(135deg, #0284c7 0%, #06b6d4 30%, #ec4899 70%, #f97316 100%);
+}
+
+.bg-magenta-gradient {
+  background: linear-gradient(135deg, #701a75 0%, #c026d3 50%, #f43f5e 100%);
+}
+
+.bg-amber-gradient {
+  background: linear-gradient(135deg, #c2410c 0%, #f97316 50%, #fbbf24 100%);
+}
+
+.bg-indigo-gradient {
+  background: linear-gradient(135deg, #1e1b4b 0%, #4f46e5 50%, #60a5fa 100%);
+}
+
+.bg-teal-gradient {
+  background: linear-gradient(135deg, #042f2e 0%, #0d9488 50%, #2dd4bf 100%);
+}
+
+.bg-sunset-gradient {
+  background: linear-gradient(135deg, #581c87 0%, #ec4899 50%, #fed7aa 100%);
+}
+
+/* Gradient Story Ring Avatars */
+.ring-gradient-teal {
+  padding: 2px;
+  background: linear-gradient(135deg, #06b6d4, #14b8a6);
+}
+
+.ring-gradient-pink {
+  padding: 2px;
+  background: linear-gradient(135deg, #ec4899, #f43f5e);
+}
+
+.ring-gradient-amber {
+  padding: 2px;
+  background: linear-gradient(135deg, #f97316, #eab308);
+}
+
+.ring-gradient-purple {
+  padding: 2px;
+  background: linear-gradient(135deg, #8b5cf6, #6366f1);
+}
+
+body {
+  background-color: var(--surround);
+  color: var(--ink);
+  font-family: var(--font-archivo), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+
+/* Dark Theme Overrides for high-tech cyberpunk AI aesthetic */
+html.dark body {
+  background-color: #09090b;
+  color: #f4f4f5;
+}
+
+html.dark .bg-\[\#b9b9b9\] {
+  background-color: #0d0d10 !important;
+}
+
+html.dark .bg-\[\#e5e5e5\] {
+  background-color: #18181b !important;
+}
+
+html.dark .bg-\[\#ffffff\] {
+  background-color: #141416 !important;
+}
+
+html.dark .bg-\[\#dedede\] {
+  background-color: #27272a !important;
+}
+
+html.dark .text-\[\#000000\] {
+  color: #f4f4f5 !important;
+}
+
+html.dark .text-\[\#3d3d3d\] {
+  color: #a1a1aa !important;
+}
+
+html.dark .border-\[\#000000\] {
+  border-color: #3f3f46 !important;
+}
+
+html.dark .border-\[\#000000\]\/20 {
+  border-color: rgba(255, 255, 255, 0.14) !important;
+}
+
+html.dark .border-\[\#000000\]\/15 {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+html.dark .border-\[\#000000\]\/10 {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Light Theme Overrides for crisp futuristic studio aesthetic */
+html.light body {
+  background-color: #f4f4f5;
+  color: #09090b;
+}
+
+html.light .bg-\[\#b9b9b9\] {
+  background-color: #ffffff !important;
+}
+
+html.light .bg-\[\#e5e5e5\] {
+  background-color: #f4f4f5 !important;
+}
+
+html.light .bg-\[\#ffffff\] {
+  background-color: #ffffff !important;
+}
+
+html.light .text-\[\#000000\] {
+  color: #09090b !important;
+}
+
+html.light .text-\[\#3d3d3d\] {
+  color: #52525b !important;
+}
+
+html.light .border-\[\#000000\] {
+  border-color: #09090b !important;
+}
+
+html.light .border-\[\#000000\]\/20 {
+  border-color: rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Accessibility: Visible focus outline */
+:focus-visible {
+  outline: 2px solid #000000;
+  outline-offset: 2px;
+}
+
+/* Range input styling for the Figma Take Scrubber */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  background: #e2e8f0;
+  cursor: pointer;
+  border-radius: 9999px;
+  margin: 12px 0;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #7c3aed;
+  border: 3px solid #ffffff;
+  border-radius: 9999px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.35);
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.15s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  background: #6d28d9;
+}
+
+input[type="range"]::-webkit-slider-thumb:active {
+  transform: scale(0.95);
+  background: #5b21b6;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: #7c3aed;
+  border: 3px solid #ffffff;
+  border-radius: 9999px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.35);
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+input[type="range"]::-moz-range-thumb:hover {
+  transform: scale(1.2);
+  background: #6d28d9;
+}
+
+input[type="range"]::-moz-range-track {
+  background: #e2e8f0;
+  height: 6px;
+  border-radius: 9999px;
+}
+
+/* 120ms crossfade between takes */
+.take-crossfade {
+  transition: opacity 120ms ease-in-out;
+}
+
+/* Tabular figures for numbers */
+.tabular-numbers {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Studio Telemetry Marquee Animation */
+@keyframes marquee-scroll {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 32s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* On-Air Tally Pulse */
+@keyframes tally-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.35;
+    transform: scale(0.85);
+  }
+}
+
+.animate-tally-blink {
+  animation: tally-pulse 1.6s ease-in-out infinite;
+}
+
+/* Audio VU Meter animations */
+@keyframes vu-bounce-1 {
+  0%, 100% { height: 4px; }
+  50% { height: 16px; }
+}
+
+@keyframes vu-bounce-2 {
+  0%, 100% { height: 14px; }
+  50% { height: 5px; }
+}
+
+@keyframes vu-bounce-3 {
+  0%, 100% { height: 8px; }
+  50% { height: 18px; }
+}
+
+@keyframes vu-bounce-4 {
+  0%, 100% { height: 16px; }
+  50% { height: 6px; }
+}
+
+.animate-vu-1 { animation: vu-bounce-1 0.7s ease-in-out infinite; }
+.animate-vu-2 { animation: vu-bounce-2 0.85s ease-in-out infinite; }
+.animate-vu-3 { animation: vu-bounce-3 0.6s ease-in-out infinite; }
+.animate-vu-4 { animation: vu-bounce-4 0.9s ease-in-out infinite; }
+
+/* Interactive Tactile Elements */
+.interactive-card {
+  transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 180ms ease,
+              border-color 180ms ease;
+}
+
+.interactive-card:hover {
+  transform: translateY(-3px);
+  border-color: #000000;
+  background-color: #ffffff;
+}
+
+.interactive-card:active {
+  transform: translateY(1px) scale(0.995);
+}
+
+.interactive-btn {
+  transition: transform 140ms cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 140ms ease,
+              color 140ms ease;
+}
+
+.interactive-btn:hover {
+  transform: translateY(-2px);
+}
+
+.interactive-btn:active {
+  transform: translateY(1px) scale(0.97);
+}
+
+/* Film Shutter Active */
+@keyframes film-gate-hum {
+  0%, 100% { opacity: 0.98; }
+  50% { opacity: 1; }
+}
+
+.film-gate-active {
+  animation: film-gate-hum 0.25s steps(2) infinite;
+}
+
+/* Hide Next.js dev indicators, badges, watermarks, and toast overlays */
+nextjs-portal,
+#nextjs-dev-overlay,
+[data-nextjs-toast],
+[data-nextjs-dialog-overlay],
+[data-nextjs-indicator],
+[data-nextjs-dev-tools],
+div[data-nextjs-dev-tools],
+div[data-nextjs-indicator],
+nextjs-toast-errors {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
